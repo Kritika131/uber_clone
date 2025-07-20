@@ -5,16 +5,21 @@ import blacklistTokenModel from "../models/blacklistToken.model.js";
 
 export async function registerCaptain(req, res, next) {
   const errors = validationResult(req);
+  console.log("Registering captain with data:",req.body);
+  console.log("Validation errors:", errors.array());
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ errors: errors.array(),message:errors.array()[0].msg });
   }
   try {
     const { fullname, email, password, vehicle } = req.body;
+    // console.log("Registering captain with data:",req.body);
     const isCaptainExists = await captainModel.findOne({ email });
+    console.log("isCaptainExists:", isCaptainExists);
     if (isCaptainExists) {
-      return res.status(400).json({ error: "Captain already exists" });
+      return res.status(400).json({errors:true, message: "Captain already exists" });
     }
     const hashedPassword = await captainModel.hashPassword(password);
+    console.log("Hashed password:", hashedPassword);
     const captain = await createCaptain({
       firstname: fullname.firstname,
       lastname: fullname.lastname,
@@ -26,6 +31,8 @@ export async function registerCaptain(req, res, next) {
       capacity: vehicle.capacity,
     });
     const token = captain.generateAuthToken();
+    console.log("Generated token:", token);
+    console.log("captaio token:", captain);
 
     return res.status(201).json({ token, captain });
   } catch (error) {
@@ -41,6 +48,8 @@ export async function loginCaptain(req, res, next) {
   try {
     const { email, password } = req.body;
     const captain = await captainModel.findOne({ email }).select("+password");
+    console.log("Logging in captain with email:", email);
+    console.log("Found captain:", captain);
     if (!captain) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
@@ -58,6 +67,7 @@ export async function loginCaptain(req, res, next) {
 
 export async function getCaptainProfile(req, res, next) {
   const captain = req.captain;
+  console.log("Fetching captain profile:", captain);
   if (!captain) {
     return res.status(404).json({ message: "Captain not found" });
   }

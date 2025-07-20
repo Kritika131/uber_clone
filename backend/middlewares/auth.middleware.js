@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import blacklistTokenModel from "../models/blacklistToken.model.js";
+import captainModel from "../models/captain.model.js";
 
 export async function authUser(req,res,next){
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1]

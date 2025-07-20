@@ -12,7 +12,7 @@ import { authCaptain } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 router.post(
-  "/",
+  "/register",
   [
     body("email").isEmail().withMessage("Invalid Email"),
     body("fullname.firstname")
