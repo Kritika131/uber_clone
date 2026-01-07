@@ -12,6 +12,7 @@ import CaptainHome from './pages/CaptainHome'
 import CaptainProtectWrapper from './pages/CaptainProtectedWrapper'
 import CaptainLogout from './pages/CaptainLogout'
 import Riding from './pages/Riding'
+import CaptainRiding from './pages/captainRiding'
 const App = () => {
   return (
     <div className='text-2xl font-bold'>
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/captainLogin" element={<Captainlogin/>}/>
         <Route path="/captainSignup" element={<CaptainSignup/>}/>
         <Route path="/riding" element={<Riding/>} />
+         <Route path='/captain-riding' element={<CaptainRiding />} />
         
         <Route path="/home" element={
           <UserProtectedWrapper><Home/></UserProtectedWrapper>}/>
